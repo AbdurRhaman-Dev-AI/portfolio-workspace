@@ -1,26 +1,224 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light dark;
+  --bg-primary: #F8F9FD;
+  --bg-secondary: #FFFFFF;
+  --text-primary: #1D1D1F;
+  --text-secondary: #6E6E73;
+  --accent-blue: #0071E3;
+  --accent-blue-hover: #0077ED;
+  --accent-cyan: #06B6D4;
+  --accent-purple: #8B5CF6;
+  --crystal-bg: rgba(255, 255, 255, 0.62);
+  --crystal-border: rgba(255, 255, 255, 0.6);
+  --crystal-border-subtle: rgba(0, 0, 0, 0.06);
+  --crystal-shadow: 0 16px 40px -8px rgba(0, 113, 227, 0.08), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+  --crystal-glow: rgba(0, 113, 227, 0.15);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root:has(> head > meta[name="color-scheme"][content="dark"]),
+html.dark {
+  color-scheme: dark;
+  --bg-primary: #070709;
+  --bg-secondary: #121215;
+  --text-primary: #F5F5F7;
+  --text-secondary: #86868B;
+  --accent-blue: #2997FF;
+  --accent-blue-hover: #47A7FF;
+  --accent-cyan: #22D3EE;
+  --accent-purple: #A78BFA;
+  --crystal-bg: rgba(18, 18, 24, 0.52);
+  --crystal-border: rgba(255, 255, 255, 0.14);
+  --crystal-border-subtle: rgba(255, 255, 255, 0.08);
+  --crystal-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), 0 8px 24px -4px rgba(41, 151, 255, 0.08);
+  --crystal-glow: rgba(41, 151, 255, 0.22);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-x: hidden;
+}
+
+/* Modal and dialog scroll containment per modern web guidance */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* =========================================================================
+   Liquid Crystal & Prismatic Glass Engine
+   ========================================================================= */
+
+.crystal-glass {
+  background: var(--crystal-bg);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid var(--crystal-border);
+  box-shadow: var(--crystal-shadow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.dark .crystal-glass {
+  box-shadow: var(--crystal-shadow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.crystal-glass-card {
+  position: relative;
+  background: var(--crystal-bg);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid var(--crystal-border);
+  box-shadow: var(--crystal-shadow), inset 0 1px 2px 0 rgba(255, 255, 255, 0.45);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .crystal-glass-card {
+  box-shadow: var(--crystal-shadow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.crystal-glass-card:hover {
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 24px 60px -12px var(--crystal-glow), inset 0 1px 2px 0 rgba(255, 255, 255, 0.6);
+}
+
+.dark .crystal-glass-card:hover {
+  border-color: rgba(41, 151, 255, 0.4);
+  box-shadow: 0 24px 60px -12px var(--crystal-glow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Nav Liquid Frosted Glass */
+.liquid-glass-nav {
+  background: rgba(248, 249, 253, 0.72);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.03);
+}
+
+.dark .liquid-glass-nav {
+  background: rgba(7, 7, 9, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px -4px rgba(0, 0, 0, 0.6);
+}
+
+/* Prismatic Gradient Text */
+.gradient-text-primary {
+  background: linear-gradient(135deg, #1D1D1F 0%, #3A3A3C 60%, #0071E3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text-primary {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E5E5EA 50%, #2997FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-aurora {
+  background: linear-gradient(120deg, #0071E3 0%, #8B5CF6 50%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text-aurora {
+  background: linear-gradient(120deg, #2997FF 0%, #A78BFA 50%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Liquid Glare / Sheen effect */
+.crystal-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.dark .crystal-glare {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+/* Ambient animated orbs */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(25px, -30px) scale(1.06);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.96);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-30px, 25px) scale(1.08);
+  }
+  66% {
+    transform: translate(25px, -20px) scale(0.95);
+  }
+}
+
+.animate-liquid-orb-1 {
+  animation: float-slow 18s ease-in-out infinite;
+}
+
+.animate-liquid-orb-2 {
+  animation: float-reverse 22s ease-in-out infinite;
+}
+
+/* Custom delicate scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 140, 145, 0.28);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 140, 145, 0.5);
+  background-clip: padding-box;
+}
+
+/* Selection highlight */
+::selection {
+  background: rgba(0, 113, 227, 0.25);
+  color: inherit;
 }
